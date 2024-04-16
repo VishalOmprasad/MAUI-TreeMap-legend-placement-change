@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:editors="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+             xmlns:treemap="clr-namespace:Syncfusion.Maui.TreeMap;assembly=Syncfusion.Maui.TreeMap"
+             xmlns:local="clr-namespace:TreeMapPositionTheLegend"
+             x:Class="TreeMapPositionTheLegend.MainPage">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="0.85*" />
+            <RowDefinition Height="0.15*" />
+        </Grid.RowDefinitions>
+
+        <Label Text="American Countries Ordered by Population - 2023"
+               Grid.Row="0"
+               VerticalTextAlignment="Center"
+               HorizontalTextAlignment="Center"
+               FontSize="14"
+               Padding="3"
+               FontAttributes="Bold" />
+
+        <editors:SfComboBox x:Name="comboBox"
+                            Grid.Row="2"
+                            HeightRequest="50"
+                            WidthRequest="250"
+                            DisplayMemberPath="PlaceName"
+                            TextMemberPath="PlaceName"
+                            SelectedIndex="0"
+                            ItemsSource="{Binding LegendPlacement}">
+            <editors:SfComboBox.BindingContext>
+                <local:LegendPlacementsViewModel />
+            </editors:SfComboBox.BindingContext>
+        </editors:SfComboBox>
+
+        <treemap:SfTreeMap x:Name="treeMap"
+                           Grid.Row="1"
+                           Margin="8"
+                           DataSource="{Binding PopulationDetails}"
+                           RangeColorValuePath="Population"
+                           PrimaryValuePath="Population">
+            <treemap:SfTreeMap.BindingContext>
+                <local:PopulationViewModel />
+            </treemap:SfTreeMap.BindingContext>
+            <treemap:SfTreeMap.LegendSettings>
+                <treemap:TreeMapLegendSettings ShowLegend="True"
+                                               Placement="Top" />
+            </treemap:SfTreeMap.LegendSettings>
+            <treemap:SfTreeMap.LeafItemSettings>
+                <treemap:TreeMapLeafItemSettings LabelPath="Country">
+                </treemap:TreeMapLeafItemSettings>
+            </treemap:SfTreeMap.LeafItemSettings>
+            <treemap:SfTreeMap.LeafItemBrushSettings>
+                <treemap:TreeMapRangeBrushSettings>
+                    <treemap:TreeMapRangeBrushSettings.RangeBrushes>
+                        <treemap:TreeMapRangeBrush LegendLabel="50M - 1B"
+                                                   From="50000000"
+                                                   To="1000000000"
+                                                   Brush="#3F8D71" />
+                        <treemap:TreeMapRangeBrush LegendLabel="10M - 50M"
+                                                   From="10000000"
+                                                   To="50000000"
+                                                   Brush="#5BA985" />
+                        <treemap:TreeMapRangeBrush LegendLabel="0.1M - 10M"
+                                                   From="100000"
+                                                   To="10000000"
+                                                   Brush="#7DC59D" />
+                    </treemap:TreeMapRangeBrushSettings.RangeBrushes>
+                </treemap:TreeMapRangeBrushSettings>
+            </treemap:SfTreeMap.LeafItemBrushSettings>
+        </treemap:SfTreeMap>
+
+    </Grid>
+
+    <ContentPage.Behaviors>
+        <local:LegendPlacementBehaviour />
+    </ContentPage.Behaviors>
+
+</ContentPage>
